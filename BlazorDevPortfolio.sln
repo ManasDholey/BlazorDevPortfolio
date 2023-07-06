@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevPortfolioServer", "DevPortfolioServer\DevPortfolioServer.csproj", "{6D10B4CD-23F4-49FF-AFDB-35691E179ACC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevPortfolioServer", "DevPortfolioServer\DevPortfolioServer.csproj", "{6D10B4CD-23F4-49FF-AFDB-35691E179ACC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevPortfolioClient", "DevPortfolioClient\DevPortfolioClient.csproj", "{E36DC719-5DDA-40AB-8A8D-B81CDAE59918}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevPortfolioClient", "DevPortfolioClient\DevPortfolioClient.csproj", "{E36DC719-5DDA-40AB-8A8D-B81CDAE59918}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevPortfolioShared", "DevPortfolioShared\DevPortfolioShared.csproj", "{025FC086-3392-40B0-8861-EA8BDAFB08C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevPortfolioShared", "DevPortfolioShared\DevPortfolioShared.csproj", "{025FC086-3392-40B0-8861-EA8BDAFB08C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
