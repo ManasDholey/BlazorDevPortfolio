@@ -7,16 +7,25 @@
             <h1 class="my-3">Blog</h1>
             <p>Click a category card to view its blog posts.</p>
             <div class="row">
-				<div class="col-md-4">
+                @if (InMemoryDatabaseCache.Categories != null)
+                {
+                    for (int i = 0; i < InMemoryDatabaseCache.Categories.Count; i++)
+                    {
+                        <div class="col-md-4">
+                            <CategoryCard />
+                        </div>
+                    }
+                }
+				@*<div class="col-md-4">
 					<CategoryCard />
-                    @*<div class="card shadow mb-2">
+                    <div class="card shadow mb-2">
                         <img src="assets/img/other/placeholder.jpg" class="card-img-top" alt="Category thumbnail image" />
                         <div class="card-body">
                             <h3 class="card-title">Category name</h3>
                             <p class="card-text">Category description</p>
                         </div>
                         <a href="/" class="btn btn-primary stretched-link">View posts</a>
-                    </div>*@
+                    </div>
                 </div>
                 <div class="col-md-4">
                    @* <div class="card shadow mb-2">
@@ -27,7 +36,7 @@
                         </div>
 
                         <a href="/" class="btn btn-primary stretched-link">View posts</a>
-                    </div>*@
+                    </div>
                     <CategoryCard />
                 </div>
                 <div class="col-md-4">
@@ -39,11 +48,34 @@
                         </div>
 
                         <a href="/" class="btn btn-primary stretched-link">View posts</a>
-                    </div>*@
+                    </div>
                     <CategoryCard />
-                </div>
+                </div>*@
             </div>
         </div>
     </div>
 </main>
 <Footer />
+@implements IDisposable
+@code
+{
+    [Inject] InMemoryDatabaseCache InMemoryDatabaseCache { get; set; }
+
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        InMemoryDatabaseCache.OnCategoriesDataChanged += StateHasChanged;
+
+        if (InMemoryDatabaseCache.Categories == null)
+        {
+            await InMemoryDatabaseCache.GetCategoriesFromDatabaseAndCache();
+        }
+    }
+
+    // Unsubscribe from events Dispose(), else we'll create a memory leak.
+    public void Dispose()
+    {
+        InMemoryDatabaseCache.OnCategoriesDataChanged -= StateHasChanged;
+    }
+}

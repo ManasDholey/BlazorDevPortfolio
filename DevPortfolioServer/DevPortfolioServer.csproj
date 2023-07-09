@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\V1\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DevPortfolioShared\DevPortfolioShared.csproj" />
   </ItemGroup>
 
