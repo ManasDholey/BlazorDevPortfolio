@@ -24,6 +24,6 @@ namespace DevPortfolioShared.Models
             [Required]
             [MaxLength(1024)]
             public required string Description { get; set; }
-        
+            public List<Post> Posts { get; set; }
     }
 }
