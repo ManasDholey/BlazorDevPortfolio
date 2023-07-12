@@ -1,8 +1,10 @@
 ﻿using DevPortfolioServer.Data;
+using DevPortfolioServer.Utility;
 using DevPortfolioShared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 
 namespace DevPortfolioServer.Controllers.V1
@@ -37,8 +39,13 @@ namespace DevPortfolioServer.Controllers.V1
             List<Category> categories = await _appDBContext.Categories
                 .Include(category => category.Posts)
                 .ToListAsync();
+            CategoryWrapper wrapper = new CategoryWrapper
+            {
+                Categories = categories
+            };
 
-            return Ok(categories);
+
+            return Ok(JsonHelper.FunJsonSerializer(wrapper));
         }
 
         // website.com/api/categories/2

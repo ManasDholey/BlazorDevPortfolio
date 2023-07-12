@@ -1,7 +1,9 @@
 ﻿using DevPortfolioServer.Data;
+using DevPortfolioServer.Utility;
 using DevPortfolioShared.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 
 namespace DevPortfolioServer.Controllers.V1
@@ -28,7 +30,7 @@ namespace DevPortfolioServer.Controllers.V1
                 .Include(post => post.Category)
                 .ToListAsync();
 
-            return Ok(posts);
+            return Ok(JsonHelper.FunJsonSerializer(posts));
         }
 
         // website.com/api/posts/2
