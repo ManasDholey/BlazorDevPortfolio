@@ -1,4 +1,5 @@
-﻿using DevPortfolioServer.Data;
+﻿using AutoMapper;
+using DevPortfolioServer.Data;
 using DevPortfolioServer.Utility;
 using DevPortfolioShared.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,13 @@ namespace DevPortfolioServer.Controllers.V1
     {
         private readonly AppDataDBContext _appDBContext;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IMapper _mapper;
 
-        public PostsController(AppDataDBContext appDBContext, IWebHostEnvironment webHostEnvironment)
+        public PostsController(AppDataDBContext appDBContext, IWebHostEnvironment webHostEnvironment, IMapper mapper)
         {
             _appDBContext = appDBContext;
             _webHostEnvironment = webHostEnvironment;
+            _mapper = mapper;
         }
 
         #region CRUD operations
@@ -39,15 +42,15 @@ namespace DevPortfolioServer.Controllers.V1
         {
             Post post = await GetPostByPostId(id);
 
-            return Ok(post);
+            return Ok(JsonHelper.FunJsonSerializer(post));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Post postToCreate)
+        public async Task<IActionResult> Create([FromBody] PostDTO postToCreateDTO)
         {
             try
             {
-                if (postToCreate == null)
+                if (postToCreateDTO == null)
                 {
                     return BadRequest(ModelState);
                 }
@@ -56,6 +59,8 @@ namespace DevPortfolioServer.Controllers.V1
                 {
                     return BadRequest(ModelState);
                 }
+
+                Post postToCreate = _mapper.Map<Post>(postToCreateDTO);
 
                 if (postToCreate.Published == true)
                 {
@@ -83,11 +88,11 @@ namespace DevPortfolioServer.Controllers.V1
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Post updatedPost)
+        public async Task<IActionResult> Update(int id, [FromBody] PostDTO updatedPostDTO)
         {
             try
             {
-                if (id < 1 || updatedPost == null || id != updatedPost.PostId)
+                if (id < 1 || updatedPostDTO == null || id != updatedPostDTO.PostId)
                 {
                     return BadRequest(ModelState);
                 }
@@ -104,9 +109,22 @@ namespace DevPortfolioServer.Controllers.V1
                     return BadRequest(ModelState);
                 }
 
-                if (oldPost.Published == false && updatedPost.Published == true)
+                Post updatedPost = _mapper.Map<Post>(updatedPostDTO);
+
+                if (updatedPost.Published == true)
                 {
-                    updatedPost.PublishDate = DateTime.UtcNow.ToString("dd/MM/yyyy hh:mm");
+                    if (oldPost.Published == false)
+                    {
+                        updatedPost.PublishDate = DateTime.UtcNow.ToString("dd/MM/yyyy hh:mm");
+                    }
+                    else
+                    {
+                        updatedPost.PublishDate = oldPost.PublishDate;
+                    }
+                }
+                else
+                {
+                    updatedPost.PublishDate = string.Empty;
                 }
 
                 // Detach oldPost from EF, else it can't be updated.
@@ -205,6 +223,6 @@ namespace DevPortfolioServer.Controllers.V1
             return postToGet;
         }
 
-        #endregion
+        #endregion 
     }
 }
