@@ -13,8 +13,8 @@ namespace DevPortfolioClient.Services
             _httpClient = httpClient;
         }
 
-        private List<Category>? _categories = null;
-        internal List<Category>? Categories
+        private List<Category> _categories = null;
+        internal List<Category> Categories
         {
             get
             {
@@ -30,6 +30,8 @@ namespace DevPortfolioClient.Services
         private bool _gettingCategoriesFromDatabaseAndCaching = false;
         internal async Task GetCategoriesFromDatabaseAndCache()
         {
+            try
+            {
             // Only allow one Get request to run at a time.
             if (_gettingCategoriesFromDatabaseAndCaching == false)
             {
@@ -46,6 +48,11 @@ namespace DevPortfolioClient.Services
                 _gettingCategoriesFromDatabaseAndCaching = false;
             }
             return;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         internal event Action OnCategoriesDataChanged;

@@ -4,7 +4,7 @@
     {
         
 #if DEBUG
-            internal const string ServerBaseUrl = "https://localhost:5003";
+            internal const string ServerBaseUrl = "https://localhost:7204";
 #else
         internal const string ServerBaseUrl = "https://appname.azurewebsites.net";
 #endif
